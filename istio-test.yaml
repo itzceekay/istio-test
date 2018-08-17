@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: istio-test
+  namespace: default
+  labels:
+    app: istio-test
+    run: istio-test
+spec:
+  ports:
+  - port: 8001
+    name: http
+  selector:
+    app: istio-test
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: istio-test
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: istio-test
+    spec:
+      containers:
+      - name: istio-test
+        image: istio-test:v0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8001
+---
